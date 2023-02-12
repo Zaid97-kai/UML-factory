@@ -12,9 +12,9 @@ public class AddCommandService
     /// </summary>
     /// <param name="command">Строка команды.</param>
     /// <returns>Найденная команда.</returns>
-    public static IElement? AddCommandAction(string command)
+    public static IElement? AddCommandAction(string command, Diagram diagram = null)
     {
         var pair = command.Split(' ');
-        return GetNewElementService.GetNewElementAction(pair);
+        return GetNewElementService.GetNewElementAction(pair, diagram);
     }
 }

@@ -147,13 +147,13 @@ public partial class MainWindow : Window
             var matchCollection = regex.Matches(command);
 
             _diagram?.Elements?.Add(matchCollection.Count == 0
-                ? AddCommandService.AddCommandAction(command)
+                ? AddCommandService.AddCommandAction(command, _diagram)
                 : AddRelationService.AddRelationAction(command, _diagram));
         }
 
         DrawShapes();
 
-        DrawSystemBoundary();
+        //DrawSystemBoundary();
     }
 
     /// <summary>
@@ -214,7 +214,11 @@ public partial class MainWindow : Window
             else if (element?.GetType() == typeof(Relation))
             {
                 (new AddRelation()).Draw(element, ImgDiagram, _diagram.Elements.Count - Actor.Count - Precedent.Count);
-            }        
+            }
+            else if (element?.GetType() == typeof(SystemBoundary))
+            {
+                (new AddSystemBoundary()).Draw(element, ImgDiagram, 0);
+            }
         }
     }
 }

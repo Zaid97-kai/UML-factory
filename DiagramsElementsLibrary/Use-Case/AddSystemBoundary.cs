@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Commands.Use_Case;
@@ -22,7 +23,7 @@ public class AddSystemBoundary : IFigure
     /// Gets or sets the y.
     /// </summary>
     /// <value>The y.</value>
-    public double Y { get; set; }
+    public double Y { get; set; } = 0;
 
     /// <summary>
     /// Gets or sets the w.
@@ -49,12 +50,26 @@ public class AddSystemBoundary : IFigure
         var canvas = new Canvas();
         panel.Children.Add(canvas);
 
+        #region Rectangle
         var rectangle = new Rectangle()
         {
             Height = ((element as SystemBoundary)!).H,
             Width = ((element as SystemBoundary)!).W,
             Stroke = Brushes.Black
         };
+        #endregion
+        #region TextBlock
+        var textBlock = new TextBlock()
+        {
+            Name = "textBlock" + element.Id,
+            Text = element.Name,
+            TextAlignment = TextAlignment.Center,
+            Width = W,
+            Height = H,
+            FontSize = 12
+        };
+        canvas.Children.Add(textBlock);
+        #endregion
 
         canvas.Children.Add(rectangle);
 
