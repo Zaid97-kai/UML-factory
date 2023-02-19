@@ -46,7 +46,7 @@ public partial class MainWindow : Window
     /// </summary>
     public MainWindow()
     {
-        InitializingServices(out var services1, out var services2);
+        InitializingServices(out var services1);
 
         InitializeComponent();
     }
@@ -55,17 +55,16 @@ public partial class MainWindow : Window
     /// Initializings the services.
     /// </summary>
     /// <param name="services1">The services1.</param>
-    /// <param name="services2">The services2.</param>
-    private void InitializingServices(out IServiceCollection services1, out IServiceCollection services2)
+    private void InitializingServices(out IServiceCollection services1)
     {
-        services1 = new ServiceCollection().AddTransient<IFileService, JsonService>();
-        services2 = new ServiceCollection().AddTransient<IFigureService, FigureService>();
+        services1 = new ServiceCollection();
+        services1.AddScoped<IFileService, JsonService>();
+        services1.AddScoped<IFigureService, FigureService>();
 
         using var serviceProvider1 = services1.BuildServiceProvider();
-        using var serviceProvider2 = services2.BuildServiceProvider();
 
+        _figureService = serviceProvider1.GetService<IFigureService>();
         _jsonService = serviceProvider1.GetService<IFileService>();
-        _figureService = serviceProvider2.GetService<IFigureService>();
     }
 
     /// <summary>
@@ -101,12 +100,12 @@ public partial class MainWindow : Window
                 }
             case Key.F3:
                 {
-                    await _jsonService.SaveJSON(_diagram, ImgDiagram);
+                    await _jsonService?.SaveJson(_diagram, ImgDiagram)!;
                     break;
                 }
             case Key.F4:
                 {
-                    await _jsonService.OpenJSON(_diagram, ImgDiagram);
+                    await _jsonService?.OpenJson(ImgDiagram)!;
                     break;
                 }
         }
@@ -162,20 +161,27 @@ public partial class MainWindow : Window
     private void DrawSystemBoundary()
     {
         var element = _diagram?.Elements?.FindAll(e => e?.GetType() == typeof(Precedent)).FirstOrDefault()!;
-        
-        var systemBoundary = new SystemBoundary()
+
+        if (element != null)
         {
-            Id = 0,
-            Name = "System Boundary",
-            X = element.X,
-            Y = 0,
-            W = ((element as Precedent)!).W,
-            H = ImgDiagram.ActualHeight
-        };
+            var systemBoundary = new SystemBoundary()
+            {
+                Id = 0,
+                Name = "System Boundary",
+                X = element.X,
+                Y = 0,
+                W = ((element as Precedent)!).W,
+                H = ImgDiagram.ActualHeight
+            };
+            
+            _diagram?.Elements?.Add(systemBoundary);
 
-        _diagram?.Elements?.Add(systemBoundary);
-
-        (new AddSystemBoundary()).Draw(systemBoundary, ImgDiagram, 0);
+            (new AddSystemBoundary()).Draw(systemBoundary, ImgDiagram, 0);
+        }
+        else
+        {
+            return;
+        }
     }
 
     /// <summary>
@@ -185,9 +191,8 @@ public partial class MainWindow : Window
     {
         ImgDiagram.Children.Clear();
         _diagram?.Elements?.Clear();
-        Precedent.Count = 0;
-        Actor.Count = 0;
-        Relation.Count = 0;
+        
+        Counter.Reset();
 
         AddActor.Count = 0;
         AddActor.Canvas = new Canvas();
@@ -200,20 +205,22 @@ public partial class MainWindow : Window
     /// </summary>
     private void DrawShapes()
     {
-        if (_diagram?.Elements == null) return;
+        if (_diagram?.Elements == null) 
+            return;
+
         foreach (var element in _diagram.Elements)
         {
             if (element?.GetType() == typeof(Precedent))
             {
-                (new AddPrecedent()).Draw(element, ImgDiagram, _diagram.Elements.Count - Actor.Count - Relation.Count);
+                (new AddPrecedent()).Draw(element, ImgDiagram, _diagram.Elements.Count - Counter.CountActors - Counter.CountRelations);
             }
             else if (element?.GetType() == typeof(Actor))
             {
-                (new AddActor()).Draw(element, ImgDiagram, _diagram.Elements.Count - Precedent.Count - Relation.Count);
+                (new AddActor()).Draw(element, ImgDiagram, _diagram.Elements.Count - Counter.CountPrecedents - Counter.CountRelations);
             }
             else if (element?.GetType() == typeof(Relation))
             {
-                (new AddRelation()).Draw(element, ImgDiagram, _diagram.Elements.Count - Actor.Count - Precedent.Count);
+                (new AddRelation()).Draw(element, ImgDiagram, _diagram.Elements.Count - Counter.CountActors - Counter.CountPrecedents);
             }        
         }
     }

@@ -8,6 +8,11 @@ namespace Commands.Services.Use_Case;
 public class GetNewElementService
 {
     /// <summary>
+    /// The new element action
+    /// </summary>
+    private static IElement? _newElementAction;
+
+    /// <summary>
     /// Поиск элемента.
     /// </summary>
     /// <param name="pair">Пара значений из команды.</param>
@@ -17,18 +22,18 @@ public class GetNewElementService
         switch (pair?[0])
         {
             case "Прецедент":
-                Precedent.Count++;
+                Counter.CountPrecedents++;
                 break;
             case "Актор":
-                Actor.Count++;
+                Counter.CountActors++;
                 break;
             default:
                 break;
         }
 
-        IElement? newElementAction = (pair?[0] == "Актор" ? new Actor() { Name = pair[1] } :
+        _newElementAction = (pair?[0] == "Актор" ? new Actor() { Name = pair[1] } :
             pair?[0] == "Прецедент" ? new Precedent() { Name = pair[1] } : null);
 
-        return newElementAction;
+        return _newElementAction;
     }
 }

@@ -1,9 +1,11 @@
-﻿using Commands.Use_Case;
+﻿using Client.Services.Figure;
+using Commands.Use_Case;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using Client.Services.Figure;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Client.Services.File;
 
@@ -15,10 +17,9 @@ public interface IFileService
     /// <summary>
     /// Opens the json.
     /// </summary>
-    /// <param name="diagram">The diagram.</param>
     /// <param name="imgDiagram">The img diagram.</param>
     /// <returns>Task.</returns>
-    Task OpenJSON(Diagram? diagram, Panel imgDiagram);
+    Task OpenJson(Panel imgDiagram);
 
     /// <summary>
     /// Saves the json.
@@ -26,7 +27,7 @@ public interface IFileService
     /// <param name="diagram">The diagram.</param>
     /// <param name="imgDiagram">The img diagram.</param>
     /// <returns>Task.</returns>
-    Task SaveJSON(Diagram? diagram, Panel imgDiagram);
+    Task SaveJson(Diagram? diagram, Panel imgDiagram);
 }
 
 /// <summary>
@@ -37,45 +38,115 @@ public class JsonService : IFileService
     /// <summary>
     /// The figure service
     /// </summary>
-    private readonly FigureService _figureService;
+    private readonly IFigureService _figureService;
+
+    /// <summary>
+    /// The diagram
+    /// </summary>
+    private Diagram _diagram;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="JsonService" /> class.
     /// </summary>
-    public JsonService()
-    {
-
-    }
+    //public JsonService()
+    //{
+    //    _diagram = new Diagram
+    //    {
+    //        Elements = new List<IElement?>()
+    //    };
+    //}
 
     /// <summary>
     /// Initializes a new instance of the <see cref="JsonService" /> class.
     /// </summary>
     /// <param name="figureService">The figure service.</param>
-    public JsonService(FigureService figureService)
+    public JsonService(IFigureService figureService)
     {
         _figureService = figureService;
+
+        _diagram = new Diagram
+        {
+            Elements = new List<IElement?>()
+        };
     }
 
     /// <summary>
     /// Opens the json.
     /// </summary>
-    /// <param name="diagram">The diagram.</param>
     /// <param name="imgDiagram">The img diagram.</param>
-    public async Task OpenJSON(Diagram? diagram, Panel imgDiagram)
+    /// <returns>Task.</returns>
+    public async Task OpenJson(Panel imgDiagram)
     {
+        _diagram.Elements?.Clear();
+
         var saves = new Microsoft.Win32.OpenFileDialog()
         {
             DefaultExt = ".JSON",
             Filter = "JSON (.JSON)|*.JSON"
         };
+
         if (saves.ShowDialog() == true)
         {
-            using (var fileStream = new FileStream(saves.FileName, FileMode.OpenOrCreate))
+            using (var reader = new StreamReader(saves.FileName))
             {
-                //todo: Исправить исключение при загрузке JSON
-                diagram = await JsonSerializer.DeserializeAsync<Diagram>(fileStream);
+                var json = await reader.ReadToEndAsync();
 
-                _figureService.DrawShapes(diagram, imgDiagram);
+                dynamic array = JsonConvert.DeserializeObject(json)!;
+                foreach (var item in array)
+                {
+                    if (item.TypeElement == typeof(Actor).ToString())
+                    {
+                        _diagram.Elements?.Add(new Actor()
+                        {
+                            Name = item.Name,
+                            H = item.H,
+                            Id = item.Id,
+                            W = item.W,
+                            X = item.X, 
+                            Y = item.Y
+                        });
+                    }
+                    else if (item.TypeElement == typeof(Precedent).ToString())
+                    {
+                        _diagram.Elements?.Add(new Precedent()
+                        {
+                            Name = item.Name,
+                            H = item.H,
+                            Id = item.Id,
+                            W = item.W,
+                            X = item.X, 
+                            Y = item.Y
+                        });
+                    }
+                    else if (item.TypeElement == typeof(Relation).ToString())
+                    {
+                        _diagram.Elements?.Add(new Relation()
+                        {
+                            Name = item.Name,
+                            H = item.H,
+                            Id = item.Id,
+                            W = item.W,
+                            X = item.X, 
+                            Y = item.Y,
+                            LinkActor = JsonConvert.DeserializeObject<Actor?>(item.LinkActor.ToString()),
+                            LinkPrecedent = JsonConvert.DeserializeObject<Precedent?>(item.LinkPrecedent.ToString())
+                        });
+                    }
+                    else if (item.TypeElement == typeof(SystemBoundary).ToString())
+                    {
+                        _diagram.Elements?.Add(new SystemBoundary()
+                        {
+                            Name = item.Name,
+                            H = item.H,
+                            Id = item.Id,
+                            W = item.W,
+                            X = item.X, 
+                            Y = item.Y
+                        });
+                    }
+                }
+
+                _figureService.DrawShapes(_diagram, imgDiagram);
             }
         }
     }
@@ -85,7 +156,8 @@ public class JsonService : IFileService
     /// </summary>
     /// <param name="diagram">The diagram.</param>
     /// <param name="imgDiagram">The img diagram.</param>
-    public async Task SaveJSON(Diagram? diagram, Panel imgDiagram)
+    /// <returns>Task.</returns>
+    public async Task SaveJson(Diagram? diagram, Panel imgDiagram)
     {
         var saves = new Microsoft.Win32.SaveFileDialog
         {

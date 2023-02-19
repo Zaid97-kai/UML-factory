@@ -20,6 +20,23 @@ public class SystemBoundary : IElement
     public string? Name { get; set; }
 
     /// <summary>
+    /// Gets or sets the type.
+    /// </summary>
+    /// <value>The type.</value>
+    public string TypeElement => typeof(SystemBoundary).ToString();
+
+    /// <summary>
+    /// Gets or sets the link actor.
+    /// </summary>
+    /// <value>The link actor.</value>
+    public Actor LinkActor { get; set; }
+    /// <summary>
+    /// Gets or sets the link precedent.
+    /// </summary>
+    /// <value>The link precedent.</value>
+    public Precedent LinkPrecedent { get; set; }
+
+    /// <summary>
     /// Gets or sets the x.
     /// </summary>
     /// <value>The x.</value>
@@ -42,4 +59,12 @@ public class SystemBoundary : IElement
     /// </summary>
     /// <value>The h.</value>
     public double H { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SystemBoundary" /> class.
+    /// </summary>
+    public SystemBoundary()
+    {
+
+    }
 }

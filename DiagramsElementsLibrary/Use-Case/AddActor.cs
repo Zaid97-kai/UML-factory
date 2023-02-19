@@ -92,7 +92,16 @@ public class AddActor : IFigure
 
         Count = Canvas.Children.Count;
         Canvas.SetLeft(Canvas.Children[Count - 1], panel.ActualWidth / 10);
-        Canvas.SetTop(Canvas.Children[Count - 1], panel.ActualHeight * element.Id / numberOfElements);
+        
+        if (numberOfElements == 0)
+        {
+            Canvas.SetTop(Canvas.Children[Count - 1], panel.ActualHeight * element.Id);
+        }
+        else
+        {
+            Canvas.SetTop(Canvas.Children[Count - 1], panel.ActualHeight * element.Id / numberOfElements);
+        }
+
 
         #endregion
 
@@ -140,8 +149,17 @@ public class AddActor : IFigure
         Count = Canvas.Children.Count;
         Canvas.SetLeft(Canvas.Children[Count - 1],
             panel.ActualWidth / 10 + ellipse.Width / 2 - textBlock.Width / 2);
-        Canvas.SetTop(Canvas.Children[Count - 1],
-            panel.ActualHeight * element.Id / numberOfElements + ellipse.Height * 2.5 - textBlock.Height / 2);
+
+        if (numberOfElements == 0)
+        {
+            Canvas.SetTop(Canvas.Children[Count - 1],
+                panel.ActualHeight * element.Id + ellipse.Height * 2.5 - textBlock.Height / 2);
+        }
+        else
+        {
+            Canvas.SetTop(Canvas.Children[Count - 1],
+                panel.ActualHeight * element.Id / numberOfElements + ellipse.Height * 2.5 - textBlock.Height / 2);
+        }
 
         #endregion
     }

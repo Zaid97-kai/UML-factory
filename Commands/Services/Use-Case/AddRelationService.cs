@@ -20,11 +20,11 @@ public class AddRelationService
         {
             Id = 0,
             Name = (diagram?.Elements?.Find(e => e?.Name == pair[0]) as Actor)?.Name + "+" + (diagram?.Elements?.Find(e => e?.Name == pair[1]) as Precedent)?.Name,
-            Actor = diagram?.Elements?.Find(e => e?.Name == pair[0]) as Actor,
-            Precedent = diagram?.Elements?.Find(e => e?.Name == pair[1]) as Precedent
+            LinkActor = diagram?.Elements?.Find(e => e?.Name == pair[0]) as Actor,
+            LinkPrecedent = diagram?.Elements?.Find(e => e?.Name == pair[1]) as Precedent
         };
 
-        Relation.Count++;
+        Counter.CountRelations++;
 
         return newElement;
     }
