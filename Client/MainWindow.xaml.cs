@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 
 namespace Client;
 
@@ -89,25 +90,28 @@ public partial class MainWindow : Window
         switch (e.Key)
         {
             case Key.F1:
-                {
-                    DrawFigures();
-                    break;
-                }
+            {
+                await ClearWhenRestarting();
+                break;
+            }
             case Key.F2:
-                {
-                    SaveImages();
-                    break;
-                }
+            {
+                await ClearWhenRestarting();
+                break;
+            }
             case Key.F3:
-                {
-                    await _jsonService?.SaveJson(_diagram, ImgDiagram)!;
-                    break;
-                }
+            {
+                await _jsonService?.SaveJson(_diagram, ImgDiagram)!;
+                break;
+            }
             case Key.F4:
-                {
-                    await _jsonService?.OpenJson(ImgDiagram)!;
-                    break;
-                }
+            {
+                await ClearWhenRestarting();
+                await _jsonService?.OpenJson(ImgDiagram)!;
+                break;
+            }
+            default:
+                break;
         }
     }
 
@@ -130,9 +134,9 @@ public partial class MainWindow : Window
     /// <summary>
     /// Draws the figures.
     /// </summary>
-    private void DrawFigures()
+    private async Task DrawFigures()
     {
-        ClearWhenRestarting();
+        await ClearWhenRestarting();
         var commandSet = StringFormatRichTextBox(TbConsole).Split(Separator);
 
         foreach (var command in commandSet)
@@ -187,7 +191,7 @@ public partial class MainWindow : Window
     /// <summary>
     /// Clears the when restarting.
     /// </summary>
-    private void ClearWhenRestarting()
+    private async Task ClearWhenRestarting()
     {
         ImgDiagram.Children.Clear();
         _diagram?.Elements?.Clear();
