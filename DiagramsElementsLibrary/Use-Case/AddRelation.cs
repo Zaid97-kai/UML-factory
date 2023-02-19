@@ -65,10 +65,10 @@ public class AddRelation : IFigure
     {
         var line = new Line()
         {
-            X1 = ((element as Relation)!).Actor!.X,
-            X2 = ((element as Relation)!).Precedent!.X,
-            Y1 = ((element as Relation)!).Actor!.Y,
-            Y2 = ((element as Relation)!).Precedent!.Y,
+            X1 = ((element as Relation)!).LinkActor!.X,
+            X2 = ((element as Relation)!).LinkPrecedent!.X,
+            Y1 = ((element as Relation)!).LinkActor!.Y,
+            Y2 = ((element as Relation)!).LinkPrecedent!.Y,
             Stroke = Brushes.Black
         };
 

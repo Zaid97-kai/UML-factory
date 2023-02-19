@@ -20,6 +20,12 @@ public class Relation : IElement
     public string? Name { get; set; }
 
     /// <summary>
+    /// Gets or sets the type.
+    /// </summary>
+    /// <value>The type.</value>
+    public string TypeElement => typeof(Relation).ToString();
+
+    /// <summary>
     /// Gets or sets the x.
     /// </summary>
     /// <value>The x.</value>
@@ -31,28 +37,33 @@ public class Relation : IElement
     public double Y { get; set; }
 
     /// <summary>
+    /// Gets or sets the w.
+    /// </summary>
+    /// <value>The w.</value>
+    public double W { get; set; }
+    /// <summary>
+    /// Gets or sets the h.
+    /// </summary>
+    /// <value>The h.</value>
+    public double H { get; set; }
+
+    /// <summary>
     /// Gets or sets the actor.
     /// </summary>
     /// <value>The actor.</value>
-    public Actor? Actor { get; set; }
+    public Actor? LinkActor { get; set; }
 
     /// <summary>
     /// Gets or sets the precedent.
     /// </summary>
     /// <value>The precedent.</value>
-    public Precedent? Precedent { get; set; }
+    public Precedent? LinkPrecedent { get; set; }
 
     /// <summary>
-    /// Gets or sets the count.
-    /// </summary>
-    /// <value>The count.</value>
-    public static int Count { get; set; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Relation"/> class.
+    /// Initializes a new instance of the <see cref="Relation" /> class.
     /// </summary>
     public Relation()
     {
-        Id = Count - 1;
+        Id = Counter.CountRelations - 1;
     }
 }

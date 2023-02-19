@@ -1,4 +1,5 @@
-﻿using Commands.Use_Case;
+﻿using System;
+using Commands.Use_Case;
 using DiagramsElementsLibrary.Use_Case;
 using System.Windows.Controls;
 
@@ -34,17 +35,24 @@ public class FigureService : IFigureService
 
         foreach (var element in diagram.Elements)
         {
-            if (element?.GetType() == typeof(Precedent))
+            if (element != null)
             {
-                (new AddPrecedent()).Draw(element, imgDiagram, diagram.Elements.Count);
+                if (element?.GetType() == typeof(Precedent))
+                {
+                    (new AddPrecedent()).Draw(element, imgDiagram, diagram.Elements.Count);
+                }
+                else if (element?.GetType() == typeof(Actor))
+                {
+                    (new AddActor()).Draw(element, imgDiagram, 0);
+                }
+                else if (element?.GetType() == typeof(Relation))
+                {
+                    (new AddRelation()).Draw(element, imgDiagram, 0);
+                }
             }
-            else if (element?.GetType() == typeof(Actor))
+            else if(element == null)
             {
-                (new AddActor()).Draw(element, imgDiagram, 0);
-            }
-            else if (element?.GetType() == typeof(Relation))
-            {
-                (new AddRelation()).Draw(element, imgDiagram, 0);
+                continue;
             }
         }
     }

@@ -20,6 +20,23 @@ public class Precedent : IElement
     public string? Name { get; set; }
 
     /// <summary>
+    /// Gets or sets the type.
+    /// </summary>
+    /// <value>The type.</value>
+    public string TypeElement => typeof(Precedent).ToString();
+
+    /// <summary>
+    /// Gets or sets the link actor.
+    /// </summary>
+    /// <value>The link actor.</value>
+    public Actor LinkActor { get; set; }
+    /// <summary>
+    /// Gets or sets the link precedent.
+    /// </summary>
+    /// <value>The link precedent.</value>
+    public Precedent LinkPrecedent { get; set; }
+
+    /// <summary>
     /// Gets or sets the x.
     /// </summary>
     /// <value>The x.</value>
@@ -44,16 +61,10 @@ public class Precedent : IElement
     public double H { get; set; }
 
     /// <summary>
-    /// Gets or sets the count.
-    /// </summary>
-    /// <value>The count.</value>
-    public static int Count { get; set; }
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="T:Commands.Use_Case.Precedent" /> class.
     /// </summary>
     public Precedent()
     {
-        Id = Count - 1;
+        Id = Counter.CountPrecedents - 1;
     }
 }
