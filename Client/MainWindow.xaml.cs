@@ -92,11 +92,12 @@ public partial class MainWindow : Window
             case Key.F1:
             {
                 await ClearWhenRestarting();
+                await DrawFigures();
                 break;
             }
             case Key.F2:
             {
-                await ClearWhenRestarting();
+                SaveImages();
                 break;
             }
             case Key.F3:
@@ -137,6 +138,16 @@ public partial class MainWindow : Window
     private async Task DrawFigures()
     {
         await ClearWhenRestarting();
+
+        ProcessingIncomingLine();
+
+        DrawShapes();
+
+        DrawSystemBoundary();
+    }
+
+    private void ProcessingIncomingLine()
+    {
         var commandSet = StringFormatRichTextBox(TbConsole).Split(Separator);
 
         foreach (var command in commandSet)
@@ -150,13 +161,9 @@ public partial class MainWindow : Window
             var matchCollection = regex.Matches(command);
 
             _diagram?.Elements?.Add(matchCollection.Count == 0
-                ? AddCommandService.AddCommandAction(command)
+                ? AddCommandService.AddCommandAction(command, _diagram)
                 : AddRelationService.AddRelationAction(command, _diagram));
         }
-
-        DrawShapes();
-
-        DrawSystemBoundary();
     }
 
     /// <summary>

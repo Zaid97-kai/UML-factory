@@ -30,6 +30,7 @@ public class SystemBoundary : IElement
     /// </summary>
     /// <value>The link actor.</value>
     public Actor LinkActor { get; set; }
+
     /// <summary>
     /// Gets or sets the link precedent.
     /// </summary>
@@ -59,6 +60,8 @@ public class SystemBoundary : IElement
     /// </summary>
     /// <value>The h.</value>
     public double H { get; set; }
+
+    public List<Precedent?> Precedents { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SystemBoundary" /> class.
