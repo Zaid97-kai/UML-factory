@@ -11,10 +11,12 @@ public class AddCommandService
     /// Добавление команды (прецедента или актора).
     /// </summary>
     /// <param name="command">Строка команды.</param>
+    /// <param name="diagram">Диаграмма.</param>
     /// <returns>Найденная команда.</returns>
-    public static IElement? AddCommandAction(string command)
+    public static IElement? AddCommandAction(string command, Diagram diagram)
     {
         var pair = command.Split(' ');
-        return GetNewElementService.GetNewElementAction(pair);
+
+        return pair.FirstOrDefault() == "Граница" ? AddSystemBoundaryService.AddSystemBoundaryAction(pair, diagram) : GetNewElementService.GetNewElementAction(pair);
     }
 }

@@ -1,11 +1,11 @@
-﻿namespace Commands.Use_Case;
+﻿namespace Commands.Use_Case.Elements;
 
 /// <summary>
-/// Class SystemBoundary.
+/// Class Relation.
 /// Implements the <see cref="Commands.Use_Case.IElement" />
 /// </summary>
 /// <seealso cref="Commands.Use_Case.IElement" />
-public class SystemBoundary : IElement
+public class Relation : IElement
 {
     /// <summary>
     /// Gets or sets the identifier.
@@ -23,25 +23,15 @@ public class SystemBoundary : IElement
     /// Gets or sets the type.
     /// </summary>
     /// <value>The type.</value>
-    public string TypeElement => typeof(SystemBoundary).ToString();
+    public string TypeElement => typeof(Relation).ToString();
 
-    /// <summary>
-    /// Gets or sets the link actor.
-    /// </summary>
-    /// <value>The link actor.</value>
-    public Actor LinkActor { get; set; }
-    /// <summary>
-    /// Gets or sets the link precedent.
-    /// </summary>
-    /// <value>The link precedent.</value>
-    public Precedent LinkPrecedent { get; set; }
+    public List<Precedent> Precedents { get; set; }
 
     /// <summary>
     /// Gets or sets the x.
     /// </summary>
     /// <value>The x.</value>
     public double X { get; set; }
-
     /// <summary>
     /// Gets or sets the y.
     /// </summary>
@@ -53,18 +43,31 @@ public class SystemBoundary : IElement
     /// </summary>
     /// <value>The w.</value>
     public double W { get; set; }
-
     /// <summary>
     /// Gets or sets the h.
     /// </summary>
     /// <value>The h.</value>
     public double H { get; set; }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SystemBoundary" /> class.
-    /// </summary>
-    public SystemBoundary()
-    {
+    public double Offset { get; set; }
 
+    /// <summary>
+    /// Gets or sets the actor.
+    /// </summary>
+    /// <value>The actor.</value>
+    public Actor? LinkActor { get; set; }
+
+    /// <summary>
+    /// Gets or sets the precedent.
+    /// </summary>
+    /// <value>The precedent.</value>
+    public Precedent? LinkPrecedent { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Relation" /> class.
+    /// </summary>
+    public Relation()
+    {
+        Id = Counter.CountRelations - 1;
     }
 }

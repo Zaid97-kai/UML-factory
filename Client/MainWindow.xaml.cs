@@ -13,7 +13,9 @@ using System.Windows.Input;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.IO;
 using System.Threading.Tasks;
+using Commands.Use_Case.Elements;
 
 namespace Client;
 
@@ -92,11 +94,12 @@ public partial class MainWindow : Window
             case Key.F1:
             {
                 await ClearWhenRestarting();
+                await DrawFigures();
                 break;
             }
             case Key.F2:
             {
-                await ClearWhenRestarting();
+                SaveImages();
                 break;
             }
             case Key.F3:
@@ -108,6 +111,15 @@ public partial class MainWindow : Window
             {
                 await ClearWhenRestarting();
                 await _jsonService?.OpenJson(ImgDiagram)!;
+                break;
+            }
+            case Key.F5:
+            {
+                using (var reader = new StreamReader("C:\\Users\\Zaid\\Source\\Repos\\UML-factory\\Client\\TestData.txt"))
+                {
+                    var text = await reader.ReadToEndAsync();
+                    TbConsole.Document.Blocks.Add(new Paragraph(new Run(text)));
+                }
                 break;
             }
             default:
@@ -137,6 +149,14 @@ public partial class MainWindow : Window
     private async Task DrawFigures()
     {
         await ClearWhenRestarting();
+
+        ProcessingIncomingLine();
+
+        DrawShapes();
+    }
+
+    private void ProcessingIncomingLine()
+    {
         var commandSet = StringFormatRichTextBox(TbConsole).Split(Separator);
 
         foreach (var command in commandSet)
@@ -150,41 +170,8 @@ public partial class MainWindow : Window
             var matchCollection = regex.Matches(command);
 
             _diagram?.Elements?.Add(matchCollection.Count == 0
-                ? AddCommandService.AddCommandAction(command)
+                ? AddCommandService.AddCommandAction(command, _diagram)
                 : AddRelationService.AddRelationAction(command, _diagram));
-        }
-
-        DrawShapes();
-
-        DrawSystemBoundary();
-    }
-
-    /// <summary>
-    /// Draws the system boundary.
-    /// </summary>
-    private void DrawSystemBoundary()
-    {
-        var element = _diagram?.Elements?.FindAll(e => e?.GetType() == typeof(Precedent)).FirstOrDefault()!;
-
-        if (element != null)
-        {
-            var systemBoundary = new SystemBoundary()
-            {
-                Id = 0,
-                Name = "System Boundary",
-                X = element.X,
-                Y = 0,
-                W = ((element as Precedent)!).W,
-                H = ImgDiagram.ActualHeight
-            };
-            
-            _diagram?.Elements?.Add(systemBoundary);
-
-            (new AddSystemBoundary()).Draw(systemBoundary, ImgDiagram, 0);
-        }
-        else
-        {
-            return;
         }
     }
 
@@ -214,18 +201,23 @@ public partial class MainWindow : Window
 
         foreach (var element in _diagram.Elements)
         {
-            if (element?.GetType() == typeof(Precedent))
+            if (element?.GetType() == typeof(Actor))
             {
-                (new AddPrecedent()).Draw(element, ImgDiagram, _diagram.Elements.Count - Counter.CountActors - Counter.CountRelations);
-            }
-            else if (element?.GetType() == typeof(Actor))
-            {
-                (new AddActor()).Draw(element, ImgDiagram, _diagram.Elements.Count - Counter.CountPrecedents - Counter.CountRelations);
+                (new AddActor()).Draw(element, ImgDiagram, _diagram,
+                    _diagram.Elements.Count - Counter.CountPrecedents - Counter.CountRelations -
+                    Counter.CountSystemBoundary);
             }
             else if (element?.GetType() == typeof(Relation))
             {
-                (new AddRelation()).Draw(element, ImgDiagram, _diagram.Elements.Count - Counter.CountActors - Counter.CountPrecedents);
-            }        
+                (new AddRelation()).Draw(element, ImgDiagram, _diagram,
+                    _diagram.Elements.Count - Counter.CountActors - Counter.CountPrecedents -
+                    Counter.CountSystemBoundary);
+            }
+            else if (element?.GetType() == typeof(SystemBoundary))
+            {
+                (new AddSystemBoundary()).Draw(element, ImgDiagram, _diagram,
+                    _diagram.Elements.Count - Counter.CountActors - Counter.CountPrecedents - Counter.CountRelations);
+            }
         }
     }
 }

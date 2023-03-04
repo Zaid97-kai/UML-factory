@@ -1,9 +1,11 @@
-﻿namespace Commands.Use_Case;
+﻿namespace Commands.Use_Case.Elements;
 
 /// <summary>
-/// Interface IElement
+/// Class SystemBoundary.
+/// Implements the <see cref="Commands.Use_Case.IElement" />
 /// </summary>
-public interface IElement
+/// <seealso cref="Commands.Use_Case.IElement" />
+public class SystemBoundary : IElement
 {
     /// <summary>
     /// Gets or sets the identifier.
@@ -21,7 +23,7 @@ public interface IElement
     /// Gets or sets the type.
     /// </summary>
     /// <value>The type.</value>
-    public string TypeElement => typeof(IElement).ToString();
+    public string TypeElement => typeof(SystemBoundary).ToString();
 
     /// <summary>
     /// Gets or sets the link actor.
@@ -58,4 +60,16 @@ public interface IElement
     /// </summary>
     /// <value>The h.</value>
     public double H { get; set; }
+
+    public double Offset { get; set; }
+
+    public List<Precedent?> Precedents { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SystemBoundary" /> class.
+    /// </summary>
+    public SystemBoundary()
+    {
+
+    }
 }
