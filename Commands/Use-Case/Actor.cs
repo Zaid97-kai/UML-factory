@@ -24,6 +24,8 @@ public class Actor : IElement
     /// <value>The type.</value>
     public string TypeElement => typeof(Actor).ToString();
 
+    public List<Precedent> Precedents { get; set; }
+
     /// <summary>
     /// Gets or sets the x.
     /// </summary>

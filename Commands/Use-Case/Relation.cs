@@ -25,6 +25,8 @@ public class Relation : IElement
     /// <value>The type.</value>
     public string TypeElement => typeof(Relation).ToString();
 
+    public List<Precedent> Precedents { get; set; }
+
     /// <summary>
     /// Gets or sets the x.
     /// </summary>

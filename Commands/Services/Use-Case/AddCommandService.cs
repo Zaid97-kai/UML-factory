@@ -17,9 +17,6 @@ public class AddCommandService
     {
         var pair = command.Split(' ');
 
-        if(pair.FirstOrDefault() == "Граница")
-            AddSystemBoundaryService.AddSystemBoundaryAction(pair, diagram);
-
-        return GetNewElementService.GetNewElementAction(pair);
+        return pair.FirstOrDefault() == "Граница" ? AddSystemBoundaryService.AddSystemBoundaryAction(pair, diagram) : GetNewElementService.GetNewElementAction(pair);
     }
 }

@@ -4,7 +4,7 @@ namespace Commands.Services.Use_Case;
 
 public class AddSystemBoundaryService
 {
-    public static SystemBoundary AddSystemBoundaryAction(string[] pair, Diagram diagram)
+    public static IElement? AddSystemBoundaryAction(string[] pair, Diagram diagram)
     {
         var subPair = pair[1].Split('(');
 
@@ -24,6 +24,8 @@ public class AddSystemBoundaryService
         {
             newSystemBoundary.Precedents.Add(diagram.Elements?.Find(f => f?.Name == t) as Precedent);
         }
+
+        Counter.CountSystemBoundary++;
 
         return newSystemBoundary;
     }

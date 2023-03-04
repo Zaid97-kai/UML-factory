@@ -35,6 +35,8 @@ public interface IElement
     /// <value>The link precedent.</value>
     public Precedent LinkPrecedent { get; set; }
 
+    public List<Precedent> Precedents { get; set; }
+
     /// <summary>
     /// Gets or sets the x.
     /// </summary>

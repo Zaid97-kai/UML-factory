@@ -142,8 +142,6 @@ public partial class MainWindow : Window
         ProcessingIncomingLine();
 
         DrawShapes();
-
-        DrawSystemBoundary();
     }
 
     private void ProcessingIncomingLine()
@@ -163,35 +161,6 @@ public partial class MainWindow : Window
             _diagram?.Elements?.Add(matchCollection.Count == 0
                 ? AddCommandService.AddCommandAction(command, _diagram)
                 : AddRelationService.AddRelationAction(command, _diagram));
-        }
-    }
-
-    /// <summary>
-    /// Draws the system boundary.
-    /// </summary>
-    private void DrawSystemBoundary()
-    {
-        var element = _diagram?.Elements?.FindAll(e => e?.GetType() == typeof(Precedent)).FirstOrDefault()!;
-
-        if (element != null)
-        {
-            var systemBoundary = new SystemBoundary()
-            {
-                Id = 0,
-                Name = "System Boundary",
-                X = element.X,
-                Y = 0,
-                W = ((element as Precedent)!).W,
-                H = ImgDiagram.ActualHeight
-            };
-            
-            _diagram?.Elements?.Add(systemBoundary);
-
-            (new AddSystemBoundary()).Draw(systemBoundary, ImgDiagram, 0);
-        }
-        else
-        {
-            return;
         }
     }
 
@@ -223,15 +192,19 @@ public partial class MainWindow : Window
         {
             if (element?.GetType() == typeof(Precedent))
             {
-                (new AddPrecedent()).Draw(element, ImgDiagram, _diagram.Elements.Count - Counter.CountActors - Counter.CountRelations);
+                (new AddPrecedent()).Draw(element, ImgDiagram, _diagram.Elements.Count - Counter.CountActors - Counter.CountRelations - Counter.CountSystemBoundary);
             }
             else if (element?.GetType() == typeof(Actor))
             {
-                (new AddActor()).Draw(element, ImgDiagram, _diagram.Elements.Count - Counter.CountPrecedents - Counter.CountRelations);
+                (new AddActor()).Draw(element, ImgDiagram, _diagram.Elements.Count - Counter.CountPrecedents - Counter.CountRelations - Counter.CountSystemBoundary);
             }
             else if (element?.GetType() == typeof(Relation))
             {
-                (new AddRelation()).Draw(element, ImgDiagram, _diagram.Elements.Count - Counter.CountActors - Counter.CountPrecedents);
+                (new AddRelation()).Draw(element, ImgDiagram, _diagram.Elements.Count - Counter.CountActors - Counter.CountPrecedents - Counter.CountSystemBoundary);
+            }
+            else if (element?.GetType() == typeof(SystemBoundary))
+            {
+                (new AddSystemBoundary()).Draw(element, ImgDiagram, _diagram.Elements.Count - Counter.CountActors - Counter.CountPrecedents - Counter.CountRelations );
             }        
         }
     }
