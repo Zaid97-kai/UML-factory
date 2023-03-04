@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Commands.Use_Case;
@@ -41,24 +42,42 @@ public class AddSystemBoundary : IFigure
     /// </summary>
     /// <param name="element">The element.</param>
     /// <param name="panel">The panel.</param>
+    /// <param name="diagram">The diagram.</param>
     /// <param name="numberOfElements">The number of elements.</param>
     /// <returns>StackPanel.</returns>
     /// <exception cref="System.NotImplementedException"></exception>
-    public void Draw(IElement element, Panel panel, int numberOfElements)
+    public void Draw(IElement element, Panel panel, Diagram diagram, int numberOfElements)
     {
+        element.Offset = 20;
+        
+        #region Precedents
+
+        foreach (var precedent in element.Precedents.Where(precedent => diagram.Elements != null))
+        {
+            (new AddPrecedent()).Draw(precedent, panel, diagram,
+                diagram.Elements!.Count - Counter.CountActors - Counter.CountRelations -
+                Counter.CountSystemBoundary);
+        }
+
+        #endregion
+
+        #region SystemBoundary
+
         var canvas = new Canvas();
         panel.Children.Add(canvas);
 
         var rectangle = new Rectangle()
         {
-            Height = ((element as SystemBoundary)!).H,
-            Width = ((element as SystemBoundary)!).W,
+            Height = element.Precedents[0].H * element.Precedents.Count + element.Precedents[0].Offset,
+            Width = element.Precedents[0].W,
             Stroke = Brushes.Black
         };
 
         canvas.Children.Add(rectangle);
 
-        Canvas.SetLeft(canvas.Children[0], element.X);
-        Canvas.SetTop(canvas.Children[0], element.Y);
+        Canvas.SetLeft(canvas.Children[0], element.Precedents[0].X);
+        Canvas.SetTop(canvas.Children[0], element.Precedents[0].Y - element.Precedents[0].H / 2);
+
+        #endregion
     }
 }

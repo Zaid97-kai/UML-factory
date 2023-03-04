@@ -42,10 +42,6 @@ public class AddPrecedent : IFigure
     /// <value>The actual size of the font.</value>
     public double ActualFontSize { get; set; } = 12;
 
-    /// <summary>Gets or sets the actual offset.</summary>
-    /// <value>The actual offset.</value>
-    public double ActualOffset { get; set; } = 20;
-
     /// <summary>
     /// Draws this instance.
     /// </summary>
@@ -53,9 +49,11 @@ public class AddPrecedent : IFigure
     /// <param name="panel">The panel.</param>
     /// <param name="numberOfElements">The number of elements.</param>
     /// <returns>StackPanel.</returns>
-    public void Draw(IElement element, Panel panel, int numberOfElements)
+    public void Draw(IElement element, Panel panel, Diagram diagram, int numberOfElements)
     {
-        SizeAdaptation(panel, numberOfElements);
+        element.Offset = 20;
+
+        SizeAdaptation(panel, element, numberOfElements);
 
         var canvas = new Canvas();
         panel.Children.Add(canvas);
@@ -90,8 +88,8 @@ public class AddPrecedent : IFigure
             Name = "textBlock" + element.Id,
             Text = element.Name,
             TextAlignment = TextAlignment.Center,
-            Width = W - ActualOffset,
-            Height = H - ActualOffset,
+            Width = W - element.Offset,
+            Height = H - element.Offset,
             FontSize = ActualFontSize
         };
         canvas.Children.Add(textBlock);
@@ -104,15 +102,16 @@ public class AddPrecedent : IFigure
 
     /// <summary>Sizes the adaptation.</summary>
     /// <param name="panel">The panel.</param>
+    /// <param name="element">The offset.</param>
     /// <param name="numberOfElements">The number of elements.</param>
-    private void SizeAdaptation(FrameworkElement panel, int numberOfElements)
+    private void SizeAdaptation(FrameworkElement panel, IElement element, int numberOfElements)
     {
         while (numberOfElements > (Convert.ToInt32(panel.ActualHeight / H) - 1))
         {
             this.W *= 0.75;
             this.H *= 0.75;
             this.ActualFontSize *= 0.75;
-            this.ActualOffset *= 0.75;
+            element.Offset *= 0.75;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Commands.Use_Case;
+﻿using Commands.Use_Case.Elements;
+
+namespace Commands.Use_Case;
 
 /// <summary>
 /// Class Precedent.
@@ -61,6 +63,8 @@ public class Precedent : IElement
     /// </summary>
     /// <value>The h.</value>
     public double H { get; set; }
+
+    public double Offset { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="T:Commands.Use_Case.Precedent" /> class.

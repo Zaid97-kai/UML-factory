@@ -1,9 +1,10 @@
-﻿namespace Commands.Use_Case;
+﻿namespace Commands.Use_Case.Elements;
 
 /// <summary>
-/// Interface IElement
+/// Class LinkActor.
+/// Implements the <see cref="Commands.Use_Case.IElement" />
 /// </summary>
-public interface IElement
+public class Actor : IElement
 {
     /// <summary>
     /// Gets or sets the identifier.
@@ -21,19 +22,7 @@ public interface IElement
     /// Gets or sets the type.
     /// </summary>
     /// <value>The type.</value>
-    public string TypeElement => typeof(IElement).ToString();
-
-    /// <summary>
-    /// Gets or sets the link actor.
-    /// </summary>
-    /// <value>The link actor.</value>
-    public Actor LinkActor { get; set; }
-
-    /// <summary>
-    /// Gets or sets the link precedent.
-    /// </summary>
-    /// <value>The link precedent.</value>
-    public Precedent LinkPrecedent { get; set; }
+    public string TypeElement => typeof(Actor).ToString();
 
     public List<Precedent> Precedents { get; set; }
 
@@ -60,4 +49,26 @@ public interface IElement
     /// </summary>
     /// <value>The h.</value>
     public double H { get; set; }
+
+    public double Offset { get; set; }
+
+    /// <summary>
+    /// Gets or sets the link actor.
+    /// </summary>
+    /// <value>The link actor.</value>
+    public Actor LinkActor { get; set; }
+
+    /// <summary>
+    /// Gets or sets the link precedent.
+    /// </summary>
+    /// <value>The link precedent.</value>
+    public Precedent LinkPrecedent { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="T:Commands.Use_Case.LinkActor" /> class.
+    /// </summary>
+    public Actor()
+    {
+        Id = Counter.CountActors - 1;
+    }
 }

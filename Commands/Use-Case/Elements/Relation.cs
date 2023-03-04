@@ -1,4 +1,4 @@
-﻿namespace Commands.Use_Case;
+﻿namespace Commands.Use_Case.Elements;
 
 /// <summary>
 /// Class Relation.
@@ -48,6 +48,8 @@ public class Relation : IElement
     /// </summary>
     /// <value>The h.</value>
     public double H { get; set; }
+
+    public double Offset { get; set; }
 
     /// <summary>
     /// Gets or sets the actor.

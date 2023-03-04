@@ -68,7 +68,7 @@ public class AddActor : IFigure
     /// <param name="panel">The panel.</param>
     /// <param name="numberOfElements">The number of elements.</param>
     /// <returns>StackPanel.</returns>
-    public void Draw(IElement element, Panel panel, int numberOfElements)
+    public void Draw(IElement element, Panel panel, Diagram diagram, int numberOfElements)
     {
         SizeAdaptation(panel, numberOfElements);
 

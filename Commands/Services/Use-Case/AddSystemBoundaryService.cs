@@ -1,4 +1,5 @@
 ﻿using Commands.Use_Case;
+using Commands.Use_Case.Elements;
 
 namespace Commands.Services.Use_Case;
 
@@ -24,7 +25,7 @@ public class AddSystemBoundaryService
         {
             newSystemBoundary.Precedents.Add(diagram.Elements?.Find(f => f?.Name == t) as Precedent);
         }
-
+        
         Counter.CountSystemBoundary++;
 
         return newSystemBoundary;

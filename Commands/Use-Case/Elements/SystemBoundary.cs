@@ -1,10 +1,11 @@
-﻿namespace Commands.Use_Case;
+﻿namespace Commands.Use_Case.Elements;
 
 /// <summary>
-/// Class LinkActor.
+/// Class SystemBoundary.
 /// Implements the <see cref="Commands.Use_Case.IElement" />
 /// </summary>
-public class Actor : IElement
+/// <seealso cref="Commands.Use_Case.IElement" />
+public class SystemBoundary : IElement
 {
     /// <summary>
     /// Gets or sets the identifier.
@@ -22,9 +23,19 @@ public class Actor : IElement
     /// Gets or sets the type.
     /// </summary>
     /// <value>The type.</value>
-    public string TypeElement => typeof(Actor).ToString();
+    public string TypeElement => typeof(SystemBoundary).ToString();
 
-    public List<Precedent> Precedents { get; set; }
+    /// <summary>
+    /// Gets or sets the link actor.
+    /// </summary>
+    /// <value>The link actor.</value>
+    public Actor LinkActor { get; set; }
+
+    /// <summary>
+    /// Gets or sets the link precedent.
+    /// </summary>
+    /// <value>The link precedent.</value>
+    public Precedent LinkPrecedent { get; set; }
 
     /// <summary>
     /// Gets or sets the x.
@@ -50,23 +61,15 @@ public class Actor : IElement
     /// <value>The h.</value>
     public double H { get; set; }
 
-    /// <summary>
-    /// Gets or sets the link actor.
-    /// </summary>
-    /// <value>The link actor.</value>
-    public Actor LinkActor { get; set; }
+    public double Offset { get; set; }
+
+    public List<Precedent?> Precedents { get; set; }
 
     /// <summary>
-    /// Gets or sets the link precedent.
+    /// Initializes a new instance of the <see cref="SystemBoundary" /> class.
     /// </summary>
-    /// <value>The link precedent.</value>
-    public Precedent LinkPrecedent { get; set; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="T:Commands.Use_Case.LinkActor" /> class.
-    /// </summary>
-    public Actor()
+    public SystemBoundary()
     {
-        Id = Counter.CountActors - 1;
+
     }
 }

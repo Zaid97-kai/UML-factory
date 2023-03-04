@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Commands.Use_Case;
+using Commands.Use_Case.Elements;
 
 namespace DiagramsElementsLibrary.Use_Case;
 
@@ -61,7 +62,7 @@ public class AddRelation : IFigure
     /// <param name="panel">The panel.</param>
     /// <param name="numberOfElements">The number of elements.</param>
     /// <returns>StackPanel.</returns>
-    public void Draw(IElement element, Panel panel, int numberOfElements)
+    public void Draw(IElement element, Panel panel, Diagram diagram, int numberOfElements)
     {
         var line = new Line()
         {
