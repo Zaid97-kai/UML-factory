@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Commands.Use_Case;
@@ -74,5 +73,10 @@ public class AddRelation : IFigure
         };
 
         AddActor.Canvas?.Children.Add(line);
+    }
+
+    public void Draw(IElement element, Panel panel, Diagram diagram, int numberOfElements, IElement relatedElement)
+    {
+        
     }
 }

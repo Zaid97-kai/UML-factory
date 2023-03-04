@@ -40,7 +40,7 @@ public class FigureService : IFigureService
             {
                 if (element?.GetType() == typeof(Precedent))
                 {
-                    (new AddPrecedent()).Draw(element, imgDiagram, diagram, diagram.Elements.Count);
+                    (new AddPrecedent()).Draw(element, imgDiagram, diagram, diagram.Elements.Count, new SystemBoundary());
                 }
                 else if (element?.GetType() == typeof(Actor))
                 {

@@ -70,6 +70,6 @@ public class SystemBoundary : IElement
     /// </summary>
     public SystemBoundary()
     {
-
+        Id = Counter.CountSystemBoundary;
     }
 }

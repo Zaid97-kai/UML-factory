@@ -56,7 +56,7 @@ public class AddSystemBoundary : IFigure
         {
             (new AddPrecedent()).Draw(precedent, panel, diagram,
                 diagram.Elements!.Count - Counter.CountActors - Counter.CountRelations -
-                Counter.CountSystemBoundary);
+                Counter.CountSystemBoundary, element);
         }
 
         #endregion
@@ -76,8 +76,13 @@ public class AddSystemBoundary : IFigure
         canvas.Children.Add(rectangle);
 
         Canvas.SetLeft(canvas.Children[0], element.Precedents[0].X);
-        Canvas.SetTop(canvas.Children[0], element.Precedents[0].Y - element.Precedents[0].H / 2);
+        Canvas.SetTop(canvas.Children[0], element.Precedents[0].Y - element.Precedents[0].H / 2 + element.Id * element.Offset);
 
         #endregion
+    }
+
+    public void Draw(IElement element, Panel panel, Diagram diagram, int numberOfElements, IElement relatedElement)
+    {
+        
     }
 }

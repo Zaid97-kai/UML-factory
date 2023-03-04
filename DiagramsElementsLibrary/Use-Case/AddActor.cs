@@ -164,6 +164,11 @@ public class AddActor : IFigure
         #endregion
     }
 
+    public void Draw(IElement element, Panel panel, Diagram diagram, int numberOfElements, IElement relatedElement)
+    {
+        
+    }
+
     /// <summary>
     /// Sizes the adaptation.
     /// </summary>
