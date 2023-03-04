@@ -42,14 +42,20 @@ public class AddPrecedent : IFigure
     /// <value>The actual size of the font.</value>
     public double ActualFontSize { get; set; } = 12;
 
+    public void Draw(IElement element, Panel panel, Diagram diagram, int numberOfElements)
+    {
+        
+    }
+
     /// <summary>
     /// Draws this instance.
     /// </summary>
     /// <param name="element">The element.</param>
     /// <param name="panel">The panel.</param>
     /// <param name="numberOfElements">The number of elements.</param>
+    /// <param name="relatedElement">The related element.</param>
     /// <returns>StackPanel.</returns>
-    public void Draw(IElement element, Panel panel, Diagram diagram, int numberOfElements)
+    public void Draw(IElement element, Panel panel, Diagram diagram, int numberOfElements, IElement relatedElement)
     {
         element.Offset = 20;
 
@@ -76,7 +82,7 @@ public class AddPrecedent : IFigure
         ((element as Precedent)!).H = H;
 
         Canvas.SetLeft(canvas.Children[count - 1], element.X);
-        Canvas.SetTop(canvas.Children[count - 1], element.Y);
+        Canvas.SetTop(canvas.Children[count - 1], element.Y + relatedElement.Id * relatedElement.Offset);
 
         element.Y += H / 2; 
         #endregion
@@ -95,7 +101,7 @@ public class AddPrecedent : IFigure
         canvas.Children.Add(textBlock);
 
         Canvas.SetLeft(canvas.Children[count], panel.ActualWidth * 2 / 3 + ellipse.Width / 2 - textBlock.Width / 2);
-        Canvas.SetTop(canvas.Children[count], panel.ActualHeight * element.Id / numberOfElements + ellipse.Height / 2 - textBlock.Height / 2);
+        Canvas.SetTop(canvas.Children[count], panel.ActualHeight * element.Id / numberOfElements + ellipse.Height / 2 - textBlock.Height / 2 + relatedElement.Id * relatedElement.Offset);
 
         #endregion
     }

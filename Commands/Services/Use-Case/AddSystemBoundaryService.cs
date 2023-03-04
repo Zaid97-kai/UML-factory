@@ -16,7 +16,6 @@ public class AddSystemBoundaryService
 
         var newSystemBoundary = new SystemBoundary()
         {
-            Id = 0,
             Name = subPair[0],
             Precedents = new()
         };
